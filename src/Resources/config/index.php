@@ -65,6 +65,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('fos_elastica.config_manager.index_templates'),
             service('fos_elastica.mapping_builder'),
+            service('fos_elastica.client'),
             service('fos_elastica.index_template_manager'),
         ]);
     $services->alias(TemplateResetter::class, 'fos_elastica.template_resetter');

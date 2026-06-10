@@ -14,8 +14,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use FOS\ElasticaBundle\Configuration\ConfigManager;
 use FOS\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use FOS\ElasticaBundle\Elastica\Client;
-use FOS\ElasticaBundle\Elastica\NodePool\RoundRobinNoResurrect;
-use FOS\ElasticaBundle\Elastica\NodePool\RoundRobinResurrect;
 use FOS\ElasticaBundle\Index\MappingBuilder;
 use FOS\ElasticaBundle\Logger\ElasticaLogger;
 use FOS\ElasticaBundle\Subscriber\PaginateElasticaQuerySubscriber;
@@ -30,17 +28,12 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('fos_elastica.client_prototype', Client::class)
         ->abstract()
-        ->arg('$config', abstract_arg('configuration for Ruflin Client'))
-        ->arg('$forbiddenCodes', abstract_arg('list of forbidden codes for Client'))
-        ->arg('$logger', abstract_arg('logger for Ruflin Client'))
+        ->args([
+            abstract_arg('client configuration'),
+            abstract_arg('client callback'),
+        ])
         ->call('setStopwatch', [service('debug.stopwatch')->nullOnInvalid()])
         ->call('setEventDispatcher', [service('event_dispatcher')->nullOnInvalid()]);
-
-    $services->set(RoundRobinResurrect::class)
-        ->factory([null, 'create']);
-
-    $services->set(RoundRobinNoResurrect::class)
-        ->factory([null, 'create']);
 
     $services->set('fos_elastica.config_manager', ConfigManager::class)
         ->args([[]]);

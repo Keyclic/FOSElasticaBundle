@@ -33,6 +33,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('fos_elastica.command.delete', DeleteCommand::class)
         ->tag('console.command', ['command' => 'fos:elastica:delete'])
         ->args([
+            service('fos_elastica.client.default'),
             service('fos_elastica.index_manager'),
         ]);
 
