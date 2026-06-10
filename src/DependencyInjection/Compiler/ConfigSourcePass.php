@@ -19,9 +19,6 @@ class ConfigSourcePass implements CompilerPassInterface
 {
     public const SOURCE_TYPE_INDEX_TEMPLATE = 'index_template';
 
-    /**
-     * @return void
-     */
     public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('fos_elastica.config_manager')) {
